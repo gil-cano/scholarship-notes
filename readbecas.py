@@ -29,13 +29,13 @@ u'D.3. Documentos anexos (en un solo archivo)',
 u'E. COMENTARIOS DE LA COMISIÓN (espacio para uso de la comisión de becas)',
 u'F. Estado de la solicitud', u'Posting Date/Time']
 
-csvreader = csv.reader(open('obecas.csv', 'r'), delimiter=',')
+csvreader = csv.reader(open('application.csv', 'r'), delimiter=',')
 header = csvreader.next()
 
 rows = [(row[1], row) for row in csvreader]
 rows.sort(key=lambda x: x[0]) # ordenamos por primer elemento
 
-outfile = open('solicitudes.txt', 'w')
+outfile = open('applications.txt', 'w')
 
 for row in rows:
     for index, head in enumerate(header_label):
