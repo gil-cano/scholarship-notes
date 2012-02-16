@@ -18,7 +18,7 @@ u'C.2.6. Promedio maestría', u'C.2.7. Exámenes generales aprobados',
 u'C.2.8. Tesis/tesina de maestría', u'C.3.1. Nombre doctorado', u'C.3.2. Escuela',
 u'C.3.3. Ingreso doctorado', u'C.3.4. Egreso doctorado',
 u'C.3.5. Exámenes generales y de candidatura presentados a la fecha',
-u'C.3.6. Tesis de doctorado', u'C.4. Informacion adicional ', u'D.1.1. Periodo reportado',
+u'C.3.6. Tesis de doctorado', u'C.4. Informacion adicional', u'D.1.1. Periodo reportado',
 u'D.1.2. Nivel', u'D.1.3. Materias cursadas en el periodo',
 u'D.1.4. Porcentaje de créditos a la fecha', u'D.1.5. Promedio hasta la fecha',
 u'D.1.6. Exámenes generales/candidatura aprobados en el periodo', u'D.1.7. Avance de tesis/tesina',
@@ -29,18 +29,34 @@ u'D.3. Documentos anexos (en un solo archivo)',
 u'E. COMENTARIOS DE LA COMISIÓN (espacio para uso de la comisión de becas)',
 u'F. Estado de la solicitud', u'Posting Date/Time']
 
-csvreader = csv.reader(open('application.csv', 'r'), delimiter=',')
+# sections = ['INFORMACIÓN GENERAL', 'INFORMACIÓN DE LA BECA', 
+# ['ESTUDIOS REALIZADOS', 'C.1. LICENCIATURA', 'C.2. MAESTRÍA', 'C.3. DOCTORADO'],
+# ['INFORME', 'D.1. INFORME DE ACTIVIDADES REALIZADAS', 'D.2. PLAN DE ACTIVIDADES', ]]
+
+csvreader = csv.reader(open('applications.csv', 'r'), delimiter=',')
 header = csvreader.next()
 
-rows = [(row[1], row) for row in csvreader]
+nameindex = 1
+rows = [(row[nameindex].lower(), row) for row in csvreader]
 rows.sort(key=lambda x: x[0]) # ordenamos por primer elemento
 
-outfile = open('applications.txt', 'w')
+outfile = open('source/applications.rst', 'w')
 
 for row in rows:
+    # write Title
+    name = row[1][nameindex].strip()
+
+    outfile.write('%s\n%s\n\n' % (name, '='*len(name.decode('UTF-8'))))
+    # write fields
     for index, head in enumerate(header_label):
-        print head.encode('UTF-8')
-        outfile.write('%s: %s\n' % (head.encode('UTF-8'), row[1][index]))
-    outfile.write('\n\n===================================================== \n\n')
+        outfile.write('**%s**\n\n' % head.encode('UTF-8'))
+        text = row[1][index].split('\n')
+        for line in text:
+            if line is not " " and line is not "":
+                outfile.write('   %s\n\n' % line.strip())
+
+        # outfile.write('**%s**\n   ``%s``\n' % (head.encode('UTF-8'), row[1][index]))
+
+    outfile.write('\n\n')
 
 outfile.close()
