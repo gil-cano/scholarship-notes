@@ -29,9 +29,16 @@ u'D.3. Documentos anexos (en un solo archivo)',
 u'E. COMENTARIOS DE LA COMISIÓN (espacio para uso de la comisión de becas)',
 u'F. Estado de la solicitud', u'Posting Date/Time']
 
-# sections = ['INFORMACIÓN GENERAL', 'INFORMACIÓN DE LA BECA', 
-# ['ESTUDIOS REALIZADOS', 'C.1. LICENCIATURA', 'C.2. MAESTRÍA', 'C.3. DOCTORADO'],
-# ['INFORME', 'D.1. INFORME DE ACTIVIDADES REALIZADAS', 'D.2. PLAN DE ACTIVIDADES', ]]
+sections = {
+1: [('INFORMACIÓN GENERAL', '-')],
+11: [('INFORMACIÓN DE LA BECA', '-')],
+18: [('ESTUDIOS REALIZADOS', '-'), ('C.1. LICENCIATURA', '~')],
+25: [('C.2. MAESTRÍA', '~')],
+33: [('C.3. DOCTORADO', '~')],
+40: [('INFORME', '-'), ('D.1. INFORME DE ACTIVIDADES REALIZADAS', '~')],
+48: [('D.2. PLAN DE ACTIVIDADES', '~')],
+56: [('COMENTARIOS DE LA COMISIÓN', '-')],
+}
 
 csvreader = csv.reader(open('applications.csv', 'r'), delimiter=',')
 header = csvreader.next()
@@ -42,13 +49,20 @@ rows.sort(key=lambda x: x[0]) # ordenamos por primer elemento
 
 outfile = open('source/applications.rst', 'w')
 
+
+def checkforsubheader(outfile, index):
+    header = sections.get(index, None)
+    if header:
+        for h in header:
+            outfile.write('%s\n%s\n\n' % (h[0], h[1]*len(h[0])))
+
 for row in rows:
     # write Title
     name = row[1][nameindex].strip()
-
     outfile.write('%s\n%s\n\n' % (name, '='*len(name.decode('UTF-8'))))
     # write fields
     for index, head in enumerate(header_label):
+        checkforsubheader(outfile, index)
         outfile.write('**%s**\n\n' % head.encode('UTF-8'))
         text = row[1][index].split('\n')
         for line in text:
