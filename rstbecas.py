@@ -45,7 +45,7 @@ header = csvreader.next()
 
 nameindex = 1
 rows = [(row[nameindex].lower(), row) for row in csvreader]
-#rows.sort(key=lambda x: x[0]) # ordenamos por primer elemento
+rows.sort(key=lambda x: x[0]) # ordenamos por primer elemento
 
 outfile = open('source/applications.rst', 'w')
 
@@ -57,7 +57,7 @@ def checkforsubheader(outfile, index):
             # outfile.write('\n%s\n%s\n\n' % (h[0], h[1]*len(h[0])))
             outfile.write('\n%s\n\n' % (h[0]))
 
-for row in rows[-2:]:
+for row in rows:
     # write title
     name = row[1][nameindex].strip()
     # outfile.write('%s\n\f%s\n\n' % ('='*len(name.decode('UTF-8')), name))
