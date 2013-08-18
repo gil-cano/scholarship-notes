@@ -74,34 +74,34 @@ def checkforsubheader(outfile, index):
     header = sections.get(index, None)
     if header:
         for h in header:
-            outfile.write('%s\n%s\n\n' % (h[0], h[1]*len(h[0])))
+            # outfile.write('%s\n%s\n\n' % (h[0], h[1]*len(h[0])))
             # for openoffice
-            # outfile.write('\n%s\n\n' % (h[0]))
+            outfile.write('\n%s\n\n' % (h[0]))
 
 for row in rows:
     # write Title
     name = row[1][nameindex].strip()
-    outfile.write('%s\n%s\n\n' % (name, '='*len(name.decode('UTF-8'))))
+    # outfile.write('%s\n%s\n\n' % (name, '='*len(name.decode('UTF-8'))))
     # for openoffice
-    # outfile.write('%s\n\n' % (name))
+    outfile.write('%s\n\n' % (name))
 
     # write fields
     for index, head in enumerate(header_label):
         checkforsubheader(outfile, index)
-        outfile.write('**%s**\n\n' % head.encode('UTF-8'))
+        #outfile.write('**%s**\n\n' % head.encode('UTF-8'))
         # for openoffice
-        # outfile.write('%s:\n' % head.encode('UTF-8'))
+        outfile.write('%s:\n' % head.encode('UTF-8'))
         text = row[1][index].split('\n')
         for line in text:
             if line is not " " and line is not "":
-                outfile.write('   %s\n\n' % line.strip())
+                #outfile.write('   %s\n\n' % line.strip())
                 # for openoffice
-                # outfile.write('   %s\n' % line.strip())
+                outfile.write('   %s\n' % line.strip())
 
         # outfile.write('**%s**\n   ``%s``\n' % (head.encode('UTF-8'), row[1][index]))
 
-    outfile.write('\n\n')
+    #outfile.write('\n\n')
     # for openoffice
-    # outfile.write('\n\f')
+    outfile.write('\n\f')
 
 outfile.close()
