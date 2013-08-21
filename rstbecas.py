@@ -72,6 +72,45 @@ for row in rows:
     outfile.write('{\\b %s}' % (name.decode('UTF-8').encode('rtfunicode')))
     outfile.write('\par}\n')
 
+    # Resume
+    resume = [
+        (1, 'NOMBRE'),
+        (41, 'NIVEL'),
+        (3, 'ASESOR'),
+        (12, 'TIPO DE BECA'),
+        (13, '\¿SOLICITA CAMBIO?'),
+        (15, 'BECA ECONOMICA'),        
+    ]
+    for index, label in resume:
+        value = row[1][index].strip()
+        outfile.write('{\pard')
+        outfile.write('{\\b %s: }' % label)
+        outfile.write(value.decode('UTF-8').encode('rtfunicode'))
+        outfile.write('\par}\n')
+    # ingreso
+    nivel = row[1][41].strip()
+    if nivel == 'Licenciatura':
+        ingreso = row[1][20].strip()
+    elif nivel == 'Doctorado':
+        ingreso = row[1][35].strip()
+    else:
+        ingreso = row[1][27].strip()
+    outfile.write('{\pard')
+    outfile.write('{\\b INGRESO: }')
+    outfile.write(ingreso.decode('UTF-8').encode('rtfunicode'))
+    outfile.write('\par}\n')
+    #AVANCE
+    outfile.write('{\pard')
+    outfile.write('{\\b AVANCE: }')
+    # outfile.write(ingreso.decode('UTF-8').encode('rtfunicode'))
+    outfile.write('\par}\n')
+    # RECOMENDACION:
+    outfile.write('{\pard')
+    outfile.write('{\\b RECOMENDACION: }')
+    # outfile.write(ingreso.decode('UTF-8').encode('rtfunicode'))
+    outfile.write('\par}\n')
+
+
     # write fields
     for index, head in enumerate(header_label):
         if(head in [u'userid', u'F. Estado de la solicitud',
