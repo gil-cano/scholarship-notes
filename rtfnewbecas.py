@@ -67,41 +67,49 @@ nameindex = 0
 rows = [(row[nameindex].lower(), row) for row in csvreader]
 rows.sort(key=lambda x: x[0]) # ordenamos por primer elemento
 
-outfile = open('source/applications.rst', 'w')
+outfile = open('source/becasnuevas.rtf', 'w')
 
+
+args = ['{', '\\rtf', '\pard', '\n']
+outfile.write(''.join(args))
+
+import rtfunicode
 
 def checkforsubheader(outfile, index):
     header = sections.get(index, None)
     if header:
-        for h in header:
-            outfile.write('%s\n%s\n\n' % (h[0], h[1]*len(h[0])))
-            # for openoffice
-            # outfile.write('\n%s\n\n' % (h[0]))
+        for i, h in enumerate(header):
+            if i == 1:
+                outfile.write('{\pard\sa300')
+            else:
+                outfile.write('{\pard\sb300\sa300')
+            outfile.write('{\\b %s}' % (h[0].encode('rtfunicode')))
+            outfile.write('\par}\n')
 
 for row in rows:
-    # write Title
+    # write Name
     name = row[1][nameindex].strip()
-    outfile.write('%s\n%s\n\n' % (name, '='*len(name.decode('UTF-8'))))
-    # for openoffice
-    # outfile.write('%s\n\n' % (name))
+    outfile.write('{\pard\qc')
+    outfile.write('{\\b %s}' % (name.decode('UTF-8').encode('rtfunicode')))
+    outfile.write('\par}\n')
 
     # write fields
     for index, head in enumerate(header_label):
+        if(head in [u'userid', u'F. Estado de la solicitud',
+            u'E. COMENTARIOS DE LA COMISIÓN (espacio para uso de la comisión de becas)']):
+            continue        
         checkforsubheader(outfile, index)
-        outfile.write('**%s**\n\n' % head.encode('UTF-8'))
-        # for openoffice
-        # outfile.write('%s:\n' % head.encode('UTF-8'))
+        outfile.write('{\pard\n')
+        args = ['\\b', ]
+        outfile.write('{%s %s:} ' % (''.join(args), head.encode('rtfunicode')))
         text = row[1][index].split('\n')
         for line in text:
             if line is not " " and line is not "":
-                outfile.write('   %s\n\n' % line.strip())
-                # for openoffice
-                # outfile.write('   %s\n' % line.strip())
+                outfile.write(line.strip().decode('UTF-8').encode('rtfunicode'))
+        outfile.write('\par\n}')
 
-        # outfile.write('**%s**\n   ``%s``\n' % (head.encode('UTF-8'), row[1][index]))
+    outfile.write('\page')
 
-    outfile.write('\n\n')
-    # for openoffice
-    # outfile.write('\n\f')
 
+outfile.write('}')
 outfile.close()
