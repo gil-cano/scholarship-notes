@@ -83,6 +83,10 @@ def checkforsubheader(outfile, index):
 for row in rows:
     # write Name
     name = row[1][nameindex].strip()
+    if row[1][51].strip() != 'Maestría':
+        print row[1][51].strip()
+        continue
+
     outfile.write('{\pard\qc')
     outfile.write('{\\b %s}' % (name.decode('UTF-8').encode('rtfunicode')))
     outfile.write('\par}\n')
