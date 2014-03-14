@@ -10,7 +10,7 @@ header_label = [
     u'A.4. Correo electrónico del asesor',
     u'A.5. Número de cuenta',
     u'A.6. Fecha de nacimiento',
-    u'A.7. Sexo',
+    u'A.7. Género',
     u'A.8. País de recidencia permanente',
     u'A.9. Nacionalidad',
     u'A.10. Teléfono particular',
