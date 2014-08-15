@@ -86,11 +86,6 @@ nameindex = 1
 rows = [(row[nameindex].lower(), row) for row in csvreader]
 rows.sort(key=lambda x: x[0])  # ordenamos por primer elemento
 
-outfile = open('source/applications.rtf', 'w')
-
-args = ['{', '\\rtf', '\pard', '\n']
-outfile.write(''.join(args))
-
 
 def checkforsubheader(outfile, index):
     header = sections.get(index, None)
@@ -103,33 +98,39 @@ def checkforsubheader(outfile, index):
             outfile.write('{\\b %s}' % (h[0].encode('rtfunicode')))
             outfile.write('\par}\n')
 
-for row in rows:
-    # write Name
-    name = row[1][nameindex].strip()
-    if row[1][54].strip() != 'Maestría':
-        print row[1][54].strip()
-        continue
+for level in ['Licenciatura', 'Maestría', 'Doctorado']:
+    file_name = 'source/{level}.rtf'.format(level=level)
+    outfile = open(file_name, 'w')
 
-    outfile.write('{\pard\qc')
-    outfile.write('{\\b %s}' % (name.decode('UTF-8').encode('rtfunicode')))
-    outfile.write('\par}\n')
+    args = ['{', '\\rtf', '\pard', '\n']
+    outfile.write(''.join(args))
 
-    # write fields
-    for index, head in enumerate(header_label):
-        if(head in [u'userid', u'F. Estado de la solicitud', u'E. COMENTARIOS DE LA COMISIÓN', u'Posting Date/Time', u'D.3. Documentos anexos']):
+    for row in rows:
+        # write Name
+        name = row[1][nameindex].strip()
+        if row[1][54].strip() != level:
+            print row[1][54].strip()
             continue
-        checkforsubheader(outfile, index)
-        outfile.write('{\pard\n')
-        args = ['\\b', ]
-        outfile.write('{%s %s:} ' % (''.join(args), head.encode('rtfunicode')))
-        text = row[1][index].split('\n')
-        for line in text:
-            if line is not " " and line is not "":
-                outfile.write(line.strip().decode('UTF-8').encode('rtfunicode'))
-        outfile.write('\par\n}')
 
-    outfile.write('\page')
+        outfile.write('{\pard\qc')
+        outfile.write('{\\b %s}' % (name.decode('UTF-8').encode('rtfunicode')))
+        outfile.write('\par}\n')
 
+        # write fields
+        for index, head in enumerate(header_label):
+            if(head in [u'userid', u'F. Estado de la solicitud', u'E. COMENTARIOS DE LA COMISIÓN', u'Posting Date/Time', u'D.3. Documentos anexos']):
+                continue
+            checkforsubheader(outfile, index)
+            outfile.write('{\pard\n')
+            args = ['\\b', ]
+            outfile.write('{%s %s:} ' % (''.join(args), head.encode('rtfunicode')))
+            text = row[1][index].split('\n')
+            for line in text:
+                if line is not " " and line is not "":
+                    outfile.write(line.strip().decode('UTF-8').encode('rtfunicode'))
+            outfile.write('\par\n}')
 
-outfile.write('}')
-outfile.close()
+        outfile.write('\page')
+
+    outfile.write('}')
+    outfile.close()
