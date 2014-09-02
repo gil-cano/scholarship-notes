@@ -108,7 +108,7 @@ for level in ['Licenciatura', 'Maestría', 'Doctorado']:
     for row in rows:
         # write Name
         name = row[1][nameindex].strip()
-        if row[1][54].strip() != level:
+        if row[1][54].strip() != level or row[1][12] != 'Juriquilla':
             print row[1][54].strip()
             continue
 
