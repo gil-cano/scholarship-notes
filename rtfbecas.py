@@ -25,6 +25,11 @@ header_label = [
     u'B.5. Tiene beca económica?',
     u'B.6. ¿Que institución otorga la beca económica?',
     u'B.7. Fecha de primer ingreso como becario en el IMATE',
+    u'C.0.0.',
+    u'C.0.1.',
+    u'C.0.2.',
+    u'C.0.3.',
+    u'C.0.4.',
     u'C.1.1. Nombre de la licenciatura',
     u'C.1.2. Escuela',
     u'C.1.3. Fecha de ingreso a licenciatura',
@@ -73,10 +78,10 @@ sections = {
     1: [(u'A. INFORMACIÓN GENERAL', '-')],
     13: [(u'B. INFORMACIÓN DE LA BECA', '-')],
     21: [(u'C. ESTUDIOS REALIZADOS', '-'), (u'C.1. LICENCIATURA', '~')],
-    29: [(u'C.2. MAESTRÍA', '~')],
-    38: [(u'C.3. DOCTORADO', '~')],
-    45: [(u'D INFORME', '-'), (u'D.1. INFORME DE ACTIVIDADES REALIZADAS', '~')],
-    53: [(u'D.2. PLAN DE ACTIVIDADES', '~')],
+    34: [(u'C.2. MAESTRÍA', '~')],
+    43: [(u'C.3. DOCTORADO', '~')],
+    50: [(u'D INFORME', '-'), (u'D.1. INFORME DE ACTIVIDADES REALIZADAS', '~')],
+    58: [(u'D.2. PLAN DE ACTIVIDADES', '~')],
 }
 
 csvreader = csv.reader(open('applications.csv', 'r'), delimiter=',')
@@ -108,8 +113,8 @@ for level in ['Licenciatura', 'Maestría', 'Doctorado']:
     for row in rows:
         # write Name
         name = row[1][nameindex].strip()
-        if row[1][54].strip() != level or row[1][12] != 'Juriquilla':
-            print row[1][54].strip()
+        if row[1][59].strip() != level or row[1][12] == 'Juriquilla':
+            print row[1][59].strip()
             continue
 
         outfile.write('{\pard\qc')
