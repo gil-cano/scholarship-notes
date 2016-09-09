@@ -103,7 +103,7 @@ def checkforsubheader(outfile, index):
             outfile.write('{\\b %s}' % (h[0].encode('rtfunicode')))
             outfile.write('\par}\n')
 
-for level in ['Licenciatura', 'Maestría', 'Doctorado']:
+for level in ['Licenciatura', 'Maestría', 'Doctorado', 'Posdoc', 'Otro']:
     file_name = 'source/{level}.rtf'.format(level=level)
     outfile = open(file_name, 'w')
 
@@ -113,7 +113,8 @@ for level in ['Licenciatura', 'Maestría', 'Doctorado']:
     for row in rows:
         # write Name
         name = row[1][nameindex].strip()
-        if row[1][59].strip() != level or row[1][12] == 'Juriquilla':
+        # if row[1][59].strip() != level or row[1][12] != 'Juriquilla':
+        if row[1][59].strip() != level:
             print row[1][59].strip()
             continue
 
